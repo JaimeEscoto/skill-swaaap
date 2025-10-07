@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillSwap | Intercambia habilidades con confianza</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg-alt: #111c34;
+      --accent: #38bdf8;
+      --accent-2: #22c55e;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --card-bg: rgba(15, 23, 42, 0.75);
+      --border: rgba(148, 163, 184, 0.15);
+      --glow: rgba(34, 197, 94, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.15), transparent 40%),
+                  radial-gradient(circle at bottom right, rgba(34, 197, 94, 0.15), transparent 45%),
+                  var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(18px);
+      background-color: rgba(15, 23, 42, 0.85);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .container {
+      width: min(1100px, 92vw);
+      margin: 0 auto;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.1rem 0;
+    }
+
+    nav .logo {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.8rem;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: var(--accent);
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #0f172a;
+      border-radius: 999px;
+      padding: 0.85rem 1.6rem;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 14px 25px rgba(34, 197, 94, 0.25);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 35px rgba(56, 189, 248, 0.28);
+    }
+
+    .hero {
+      padding: 8rem 0 6rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 5vw, 3.5rem);
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      margin-bottom: 2rem;
+    }
+
+    .hero-card {
+      position: relative;
+      padding: 2.2rem;
+      background: linear-gradient(145deg, rgba(56, 189, 248, 0.12), rgba(15, 23, 42, 0.95));
+      border-radius: 1.8rem;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      box-shadow: 0 25px 60px rgba(8, 47, 73, 0.4);
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      top: -40%;
+      right: -30%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(34, 197, 94, 0.5), transparent 60%);
+      filter: blur(4px);
+    }
+
+    .hero-card h2 {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero-card ul {
+      list-style: none;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .hero-card li {
+      position: relative;
+      padding-left: 2.4rem;
+      color: var(--muted);
+    }
+
+    .hero-card li::before {
+      content: "";
+      position: absolute;
+      left: 0.8rem;
+      top: 0.55rem;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-2);
+      box-shadow: 0 0 10px var(--glow);
+    }
+
+    section {
+      padding: 5rem 0;
+    }
+
+    .section-title {
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.3em;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-heading {
+      font-size: clamp(2rem, 4vw, 2.6rem);
+      margin-bottom: 1.5rem;
+    }
+
+    .section-description {
+      color: var(--muted);
+      max-width: 720px;
+      margin-bottom: 2.8rem;
+    }
+
+    .grid {
+      display: grid;
+      gap: 1.8rem;
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 1.4rem;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(56, 189, 248, 0.45);
+    }
+
+    .card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .card p {
+      color: var(--muted);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      background: rgba(56, 189, 248, 0.18);
+      color: var(--accent);
+      border-radius: 999px;
+      padding: 0.35rem 0.9rem;
+      letter-spacing: 0.12em;
+      margin-bottom: 1.2rem;
+    }
+
+    .feature-list {
+      display: grid;
+      gap: 1.1rem;
+      margin-top: 1.6rem;
+    }
+
+    .feature-item {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .feature-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: rgba(56, 189, 248, 0.16);
+      display: grid;
+      place-items: center;
+      font-size: 1.3rem;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .feature-content h4 {
+      font-size: 1.05rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .feature-content p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .split {
+      display: grid;
+      gap: 2.6rem;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      align-items: center;
+    }
+
+    .list {
+      list-style: none;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .list li {
+      padding: 1.1rem 1.2rem;
+      border-radius: 1rem;
+      background: rgba(30, 41, 59, 0.65);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+    }
+
+    .cta {
+      text-align: center;
+      padding: 6rem 0;
+    }
+
+    .cta h2 {
+      font-size: clamp(2.1rem, 4vw, 2.8rem);
+      margin-bottom: 1rem;
+    }
+
+    .cta p {
+      max-width: 640px;
+      margin: 0 auto 2.2rem;
+      color: var(--muted);
+    }
+
+    footer {
+      padding: 3rem 0 2rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 720px) {
+      nav ul {
+        gap: 1rem;
+      }
+
+      .hero {
+        padding-top: 6rem;
+      }
+
+      .btn-primary {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">SkillSwap</div>
+        <ul>
+          <li><a href="#perfil">Perfil</a></li>
+          <li><a href="#algoritmo">Coincidencias</a></li>
+          <li><a href="#mensajeria">Mensajería</a></li>
+          <li><a href="#confianza">Confianza</a></li>
+          <li><a href="#ux">Experiencia</a></li>
+          <li><a href="#tecnico">Tecnología</a></li>
+        </ul>
+        <a class="btn-primary" href="#cta">Únete a la beta</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <section class="hero" id="inicio">
+        <div>
+          <span class="pill">Trueque digital inteligente</span>
+          <h1>Conecta, comparte y aprende con SkillSwap</h1>
+          <p>
+            Una plataforma diseñada para que personas apasionadas intercambien habilidades de manera segura, eficiente y humana. 
+            SkillSwap combina perfiles profundos, coincidencias inteligentes y una comunidad confiable para impulsar el aprendizaje colaborativo.
+          </p>
+          <a class="btn-primary" href="#cta">Explorar la visión</a>
+        </div>
+        <div class="hero-card">
+          <h2>¿Por qué SkillSwap es diferente?</h2>
+          <ul>
+            <li>Perfiles completos que muestran tu historia y tu talento.</li>
+            <li>Algoritmos de trueque perfectos y cadenas colaborativas.</li>
+            <li>Mensajería privada, valoraciones justas y reputación transparente.</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+
+    <section id="perfil">
+      <div class="container">
+        <p class="section-title">01 · Perfil de usuario</p>
+        <h2 class="section-heading">Haz de tu perfil una vitrina auténtica de tus habilidades</h2>
+        <p class="section-description">
+          Cada perfil en SkillSwap está diseñado como una tarjeta de presentación profesional. Muestra lo que ofreces, lo que buscas y por qué eres la persona ideal para un intercambio significativo.
+        </p>
+        <div class="grid grid-3">
+          <div class="card">
+            <div class="pill">Habilidades que ofreces</div>
+            <h3>Clasificación por categorías</h3>
+            <p>Añade habilidades con subcategorías detalladas (Tecnología &gt; Desarrollo Frontend, Cocina &gt; Repostería vegana) para que otros te encuentren fácilmente.</p>
+          </div>
+          <div class="card">
+            <div class="pill">Habilidades que buscas</div>
+            <h3>Define tus metas</h3>
+            <p>Comparte las habilidades que quieres aprender o perfeccionar. El algoritmo usará esta información para emparejarte con quienes pueden ayudarte.</p>
+          </div>
+          <div class="card">
+            <div class="pill">Portafolio multimedia</div>
+            <h3>Demuestra tu experiencia</h3>
+            <p>Sube fotos, videos o enlaces externos como GitHub, Behance o tu canal de YouTube para respaldar tu talento.</p>
+          </div>
+        </div>
+        <div class="feature-list" style="margin-top:2.8rem;">
+          <div class="feature-item">
+            <div class="feature-icon">🧑‍💼</div>
+            <div class="feature-content">
+              <h4>Bio personal con propósito</h4>
+              <p>Expresa quién eres, qué te inspira y cómo quieres aportar a la comunidad SkillSwap.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🔒</div>
+            <div class="feature-content">
+              <h4>Verificación de confianza</h4>
+              <p>Validación por correo y teléfono para garantizar interacciones seguras y auténticas.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="algoritmo">
+      <div class="container">
+        <p class="section-title">02 · Coincidencias inteligentes</p>
+        <h2 class="section-heading">Trueques perfectos y cadenas colaborativas impulsadas por IA</h2>
+        <p class="section-description">
+          Nuestro motor de coincidencias analiza miles de combinaciones para proponerte intercambios equilibrados y justos. Desde el trueque directo hasta cadenas que involucran a múltiples miembros de la comunidad.
+        </p>
+        <div class="split">
+          <div class="card">
+            <div class="pill">Trueque perfecto</div>
+            <h3>Coincidencias de doble vía</h3>
+            <p>Encuentra personas que ofrecen exactamente lo que buscas y desean lo que tú puedes enseñar. Todo en una sola coincidencia.</p>
+            <div class="feature-list">
+              <div class="feature-item">
+                <div class="feature-icon">🔄</div>
+                <div class="feature-content">
+                  <h4>Intercambio justo</h4>
+                  <p>La plataforma evalúa niveles de habilidad, disponibilidad y objetivos para alinear expectativas.</p>
+                </div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon">⚖️</div>
+                <div class="feature-content">
+                  <h4>Balance de valor</h4>
+                  <p>Algoritmos dinámicos evitan intercambios desiguales y sugieren ajustes en duración o formato.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="pill">Cadena de favores</div>
+            <h3>Coincidencias de terceros</h3>
+            <p>Cuando el trueque directo no es posible, SkillSwap crea cadenas donde cada miembro recibe y ofrece valor a la comunidad.</p>
+            <div class="feature-list">
+              <div class="feature-item">
+                <div class="feature-icon">🧭</div>
+                <div class="feature-content">
+                  <h4>Rutas sugeridas</h4>
+                  <p>Visualiza la cadena completa y acepta participar si se ajusta a tus tiempos e intereses.</p>
+                </div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon">🤝</div>
+                <div class="feature-content">
+                  <h4>Colaboración colectiva</h4>
+                  <p>Impulsa el aprendizaje circular conectando personas con habilidades complementarias.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="grid grid-3" style="margin-top:2.5rem;">
+          <div class="card">
+            <div class="feature-icon" style="margin-bottom:1rem;">📍</div>
+            <h3>Filtros por proximidad</h3>
+            <p>Define el radio ideal para encuentros presenciales o remotos según tus necesidades.</p>
+          </div>
+          <div class="card">
+            <div class="feature-icon" style="margin-bottom:1rem;">🎨</div>
+            <h3>Categorías personalizadas</h3>
+            <p>Selecciona áreas específicas como Arte, Tecnología o Bienestar para encontrar coincidencias relevantes.</p>
+          </div>
+          <div class="card">
+            <div class="feature-icon" style="margin-bottom:1rem;">📈</div>
+            <h3>Niveles de habilidad</h3>
+            <p>Filtra por experiencia (Principiante, Intermedio, Avanzado) para asegurar un intercambio alineado a tu nivel.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="mensajeria">
+      <div class="container">
+        <p class="section-title">03 · Mensajería segura</p>
+        <h2 class="section-heading">Comunica, coordina y aprende sin salir de SkillSwap</h2>
+        <div class="split">
+          <div>
+            <p class="section-description">
+              Una vez que se crea una coincidencia, el chat integrado te permite planificar el intercambio con total seguridad. Disfruta de mensajes privados, plantillas para romper el hielo y un seguimiento claro del progreso.
+            </p>
+            <ul class="list">
+              <li><strong>Chat privado:</strong> conversación uno a uno sin compartir información personal hasta que lo decidas.</li>
+              <li><strong>Plantillas de mensajes:</strong> inicia la conversación con frases prediseñadas y personalízalas en segundos.</li>
+              <li><strong>Historial de intercambios:</strong> consulta tus trueques, estados y acuerdos para mantener todo organizado.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="pill">Flujo guiado</div>
+            <h3>Experiencia conversacional</h3>
+            <p>Notificaciones inteligentes, recordatorios de sesiones y posibilidad de compartir materiales sin abandonar la plataforma.</p>
+            <div class="feature-list">
+              <div class="feature-item">
+                <div class="feature-icon">🔔</div>
+                <div class="feature-content">
+                  <h4>Alertas oportunas</h4>
+                  <p>Mantente al día con avisos sobre nuevos mensajes, confirmaciones y recordatorios antes de cada intercambio.</p>
+                </div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon">🗂️</div>
+                <div class="feature-content">
+                  <h4>Materiales compartidos</h4>
+                  <p>Envía links, documentos y recursos dentro del chat para preparar cada sesión.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="confianza">
+      <div class="container">
+        <p class="section-title">04 · Confianza y reputación</p>
+        <h2 class="section-heading">Construye relaciones sólidas con valoraciones transparentes</h2>
+        <p class="section-description">
+          La reputación colectiva fortalece la comunidad. Después de cada intercambio, ambas partes califican la experiencia con indicadores específicos que alimentan el nivel de confiabilidad del perfil.
+        </p>
+        <div class="grid grid-3">
+          <div class="card">
+            <div class="feature-icon" style="margin-bottom:1rem;">⭐</div>
+            <h3>Valoración mutua</h3>
+            <p>Las calificaciones se publican solo cuando ambas partes han opinado, incentivando comentarios honestos y equilibrados.</p>
+          </div>
+          <div class="card">
+            <div class="feature-icon" style="margin-bottom:1rem;">🗣️</div>
+            <h3>Calidad y comunicación</h3>
+            <p>Evalúa la calidad de la habilidad, claridad en la comunicación y puntualidad para ofrecer retroalimentación útil.</p>
+          </div>
+          <div class="card">
+            <div class="feature-icon" style="margin-bottom:1rem;">🏅</div>
+            <h3>Nivel de reputación</h3>
+            <p>Obtén insignias visibles en tu perfil según tus valoraciones acumuladas para inspirar confianza inmediata.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="ux">
+      <div class="container">
+        <p class="section-title">05 · Diseño centrado en el usuario</p>
+        <h2 class="section-heading">Una experiencia cálida, accesible y fácil de navegar</h2>
+        <div class="split">
+          <div class="card">
+            <div class="pill">UI/UX</div>
+            <h3>Interfaz pensada para conectar</h3>
+            <p>Paleta de colores que transmite comunidad, componentes accesibles y animaciones sutiles celebran cada nuevo match.</p>
+            <div class="feature-list">
+              <div class="feature-item">
+                <div class="feature-icon">🧭</div>
+                <div class="feature-content">
+                  <h4>Navegación intuitiva</h4>
+                  <p>Secciones claras: Mi Perfil, Explorar Habilidades y Mensajes para moverte sin esfuerzo.</p>
+                </div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon">✨</div>
+                <div class="feature-content">
+                  <h4>Micro-animaciones</h4>
+                  <p>Pequeños detalles que celebran tus logros y mantienen la experiencia dinámica.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="pill">Geolocalización</div>
+            <h3>Mapa interactivo y control de privacidad</h3>
+            <p>Visualiza la comunidad en un mapa dinámico y decide cuánta información compartir: desde tu ciudad hasta tu vecindario.</p>
+            <div class="feature-list">
+              <div class="feature-item">
+                <div class="feature-icon">🗺️</div>
+                <div class="feature-content">
+                  <h4>Visualización geográfica</h4>
+                  <p>Identifica oportunidades cercanas para encuentros presenciales o mentorías híbridas.</p>
+                </div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon">🛡️</div>
+                <div class="feature-content">
+                  <h4>Privacidad granular</h4>
+                  <p>Comparte solo lo necesario con ajustes de visibilidad para cada nivel de detalle.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tecnico">
+      <div class="container">
+        <p class="section-title">06 · Arquitectura tecnológica</p>
+        <h2 class="section-heading">Escalable, segura y lista para crecer con la comunidad</h2>
+        <div class="split">
+          <div>
+            <p class="section-description">
+              SkillSwap se construye sobre una base técnica robusta que prioriza el rendimiento, la seguridad y la expansión futura del modelo de negocio.
+            </p>
+            <ul class="list">
+              <li><strong>Backend escalable:</strong> Opciones flexibles como Node.js, Python/Django o Ruby on Rails con bases de datos SQL o NoSQL.</li>
+              <li><strong>Autenticación segura:</strong> Soporte para correo electrónico, Google y Facebook mediante OAuth o Firebase Authentication.</li>
+              <li><strong>Protección de datos:</strong> Cifrado de conversaciones, reportes de usuarios y monitoreo para prevenir conductas inapropiadas.</li>
+              <li><strong>Monetización futura:</strong> Planes premium con filtros avanzados, más sugerencias y ventajas exclusivas.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="pill">Roadmap</div>
+            <h3>Próximos pasos estratégicos</h3>
+            <div class="feature-list">
+              <div class="feature-item">
+                <div class="feature-icon">🚀</div>
+                <div class="feature-content">
+                  <h4>Lanzamiento beta</h4>
+                  <p>Validar funcionalidades clave con un grupo selecto de usuarios.</p>
+                </div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon">📊</div>
+                  <div class="feature-content">
+                    <h4>Métricas de aprendizaje</h4>
+                    <p>Medir satisfacción, retención y calidad de intercambios para iterar rápidamente.</p>
+                  </div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon">💡</div>
+                <div class="feature-content">
+                  <h4>Modelo sostenible</h4>
+                  <p>Introducir suscripción opcional sin sacrificar la esencia colaborativa del trueque.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta" id="cta">
+      <div class="container">
+        <h2>Únete a la beta privada de SkillSwap</h2>
+        <p>
+          Sé parte de la comunidad pionera que está redefiniendo el intercambio de habilidades. Comparte tus talentos, descubre nuevas pasiones y construye conexiones auténticas con personas que, como tú, creen en el aprendizaje colaborativo.
+        </p>
+        <a class="btn-primary" href="mailto:hola@skillswap.app?subject=Quiero%20unirme%20a%20SkillSwap">Reservar mi invitación</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      © <span id="year"></span> SkillSwap · Construyendo una economía colaborativa basada en la confianza.
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
