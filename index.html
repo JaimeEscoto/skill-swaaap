@@ -1,592 +1,714 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SkillSwap | Intercambia habilidades con confianza</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --color-background: #0f172a;
-      --color-surface: #14213d;
-      --color-surface-alt: #1f2b4b;
-      --color-primary: #38bdf8;
-      --color-secondary: #22c55e;
-      --color-text: #f8fafc;
-      --color-text-muted: #cbd5f5;
-      --color-border: rgba(148, 163, 184, 0.25);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background-color: #0f172a;
-      background-image: radial-gradient(circle at 10% 15%, rgba(34, 197, 94, 0.18), transparent 40%),
-        radial-gradient(circle at 85% 20%, rgba(56, 189, 248, 0.16), transparent 45%),
-        radial-gradient(circle at 12% 88%, rgba(56, 189, 248, 0.12), transparent 45%);
-      background-color: var(--color-background);
-      color: var(--color-text);
-      min-height: 100vh;
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      background: rgba(15, 23, 42, 0.9);
-      background: linear-gradient(90deg, rgba(15, 23, 42, 0.92), rgba(15, 23, 42, 0.82));
-      border-bottom: 1px solid var(--color-border);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
-
-    .container {
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 0 1.6rem;
-    }
-
-    nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.1rem 0;
-    }
-
-    .logo {
-      font-weight: 700;
-      font-size: 1.3rem;
-      letter-spacing: 0.05em;
-    }
-
-    .nav-links {
-      display: flex;
-      list-style: none;
-      gap: 1.4rem;
-    }
-
-    .nav-links a {
-      color: var(--color-text-muted);
-      text-decoration: none;
-      font-weight: 600;
-      transition: color 0.3s ease;
-    }
-
-    .nav-links a:hover {
-      color: var(--color-primary);
-    }
-
-    main {
-      padding-bottom: 5rem;
-    }
-
-    section {
-      padding: 4.5rem 0;
-    }
-
-    .hero {
-      display: grid;
-      gap: 2.5rem;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      align-items: center;
-      padding-top: 5.5rem;
-    }
-
-    .hero h1 {
-      font-size: clamp(2.4rem, 5vw, 3.4rem);
-      line-height: 1.05;
-      margin-bottom: 1.2rem;
-    }
-
-    .hero p {
-      color: var(--color-text-muted);
-      margin-bottom: 2rem;
-      font-size: 1.05rem;
-    }
-
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      padding: 0.85rem 1.8rem;
-      border-radius: 999px;
-      font-weight: 700;
-      color: #04111f;
-      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
-      text-decoration: none;
-      box-shadow: 0 18px 35px rgba(56, 189, 248, 0.35);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 24px 40px rgba(34, 197, 94, 0.45);
-    }
-
-    .hero-card {
-      position: relative;
-      background: rgba(20, 33, 61, 0.8);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      border-radius: 1.6rem;
-      padding: 2.4rem;
-      overflow: hidden;
-    }
-
-    .hero-card::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 80% 10%, rgba(56, 189, 248, 0.18), transparent 55%);
-      pointer-events: none;
-    }
-
-    .hero-card h2 {
-      font-size: 1.4rem;
-      margin-bottom: 1.2rem;
-    }
-
-    .hero-card ul {
-      display: grid;
-      gap: 0.8rem;
-      list-style: none;
-      color: var(--color-text-muted);
-    }
-
-    .section-tag {
-      text-transform: uppercase;
-      letter-spacing: 0.28em;
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--color-primary);
-      margin-bottom: 0.8rem;
-    }
-
-    .section-title {
-      font-size: clamp(2rem, 4vw, 2.6rem);
-      margin-bottom: 1rem;
-    }
-
-    .section-lead {
-      color: var(--color-text-muted);
-      font-size: 1.02rem;
-      margin-bottom: 2.2rem;
-      max-width: 680px;
-    }
-
-    .grid {
-      display: grid;
-      gap: 1.6rem;
-    }
-
-    .grid-3 {
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    }
-
-    .card {
-      background: rgba(20, 33, 61, 0.72);
-      border-radius: 1.4rem;
-      border: 1px solid rgba(148, 163, 184, 0.25);
-      padding: 1.9rem;
-      display: grid;
-      gap: 0.8rem;
-    }
-
-    .card-title {
-      font-size: 1.18rem;
-      font-weight: 700;
-    }
-
-    .card p {
-      color: var(--color-text-muted);
-      font-size: 0.96rem;
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.35rem 0.85rem;
-      border-radius: 999px;
-      background: rgba(56, 189, 248, 0.15);
-      color: var(--color-primary);
-      font-weight: 700;
-      font-size: 0.74rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    .feature-list {
-      display: grid;
-      gap: 1.1rem;
-      margin-top: 1rem;
-    }
-
-    .feature {
-      display: grid;
-      grid-template-columns: 48px 1fr;
-      gap: 1rem;
-      align-items: flex-start;
-    }
-
-    .feature-icon {
-      width: 48px;
-      height: 48px;
-      display: grid;
-      place-items: center;
-      font-size: 1.4rem;
-      border-radius: 14px;
-      background: rgba(56, 189, 248, 0.18);
-      color: var(--color-primary);
-    }
-
-    .split {
-      display: grid;
-      gap: 2.4rem;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      align-items: start;
-    }
-
-    .list {
-      list-style: none;
-      display: grid;
-      gap: 1rem;
-    }
-
-    .list li {
-      background: rgba(20, 33, 61, 0.68);
-      border-radius: 1rem;
-      border: 1px solid rgba(148, 163, 184, 0.18);
-      padding: 1rem 1.2rem;
-      color: var(--color-text-muted);
-      font-size: 0.95rem;
-    }
-
-    .cta {
-      text-align: center;
-      padding: 5rem 0 6rem;
-    }
-
-    .cta p {
-      color: var(--color-text-muted);
-      max-width: 620px;
-      margin: 1rem auto 2rem;
-      font-size: 1.02rem;
-    }
-
-    footer {
-      border-top: 1px solid var(--color-border);
-      padding: 2.5rem 0 2rem;
-      text-align: center;
-      color: var(--color-text-muted);
-      font-size: 0.9rem;
-    }
-
-    @media (max-width: 768px) {
-      header {
-        position: static;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Skill Swaaap MVP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0f172a;
+        --bg-soft: #1e293b;
+        --accent: #38bdf8;
+        --accent-strong: #0ea5e9;
+        --success: #22c55e;
+        --text: #f8fafc;
+        --text-muted: #cbd5f5;
+        --border: rgba(148, 163, 184, 0.25);
       }
 
-      nav {
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: 'Manrope', system-ui, sans-serif;
+        background: radial-gradient(circle at 10% 15%, rgba(34, 197, 94, 0.16), transparent 40%),
+          radial-gradient(circle at 85% 20%, rgba(56, 189, 248, 0.18), transparent 45%),
+          var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        display: flex;
         flex-direction: column;
-        gap: 1.2rem;
-        text-align: center;
       }
 
-      .nav-links {
-        flex-wrap: wrap;
-        justify-content: center;
+      header {
+        border-bottom: 1px solid var(--border);
+        padding: 1.25rem 1.5rem;
+        backdrop-filter: blur(10px);
+        background: rgba(15, 23, 42, 0.85);
       }
 
-      .btn-primary {
+      header h1 {
+        margin: 0;
+        font-size: 1.6rem;
+        letter-spacing: 0.03em;
+      }
+
+      main {
+        flex: 1;
+        width: min(1100px, 96%);
+        margin: 1.5rem auto 2.5rem;
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      .card {
+        background: rgba(15, 23, 42, 0.82);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 1.5rem;
+        box-shadow: 0 25px 60px rgba(15, 23, 42, 0.35);
+        backdrop-filter: blur(20px);
+      }
+
+      .split {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      @media (min-width: 900px) {
+        .split-2 {
+          grid-template-columns: 320px 1fr;
+        }
+
+        .split-3 {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      h2 {
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+      }
+
+      form {
+        display: grid;
+        gap: 0.9rem;
+      }
+
+      label {
+        font-weight: 600;
+        display: block;
+        font-size: 0.9rem;
+      }
+
+      input,
+      textarea,
+      select {
         width: 100%;
-        justify-content: center;
+        padding: 0.75rem 0.9rem;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: rgba(15, 23, 42, 0.9);
+        color: var(--text);
+        font-family: inherit;
+        font-size: 0.95rem;
       }
 
-      .hero {
-        padding-top: 3rem;
+      textarea {
+        resize: vertical;
+        min-height: 120px;
       }
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <div class="container">
-      <nav>
-        <div class="logo">SkillSwap</div>
-        <ul class="nav-links">
-          <li><a href="#perfil">Perfil</a></li>
-          <li><a href="#algoritmo">Coincidencias</a></li>
-          <li><a href="#mensajeria">Mensajería</a></li>
-          <li><a href="#confianza">Confianza</a></li>
-          <li><a href="#experiencia">Experiencia</a></li>
-          <li><a href="#tecnica">Tecnología</a></li>
-        </ul>
-        <a class="btn-primary" href="#cta">Únete a la beta</a>
-      </nav>
-    </div>
-  </header>
 
-  <main>
-    <div class="container">
-      <section class="hero" id="inicio">
-        <div>
-          <span class="pill">Trueque inteligente</span>
-          <h1>Comparte tus habilidades, aprende nuevas pasiones</h1>
-          <p>
-            SkillSwap crea una comunidad de aprendizaje colaborativo donde cada perfil es una vitrina profesional,
-            cada coincidencia es justa y cada interacción se respalda con confianza.
-          </p>
-          <a class="btn-primary" href="#cta">Explorar la visión</a>
-        </div>
-        <div class="hero-card">
-          <h2>Lo que hace única a SkillSwap</h2>
-          <ul>
-            <li>Perfiles profundos con portafolio, bio y verificación.</li>
-            <li>Algoritmos que facilitan trueques directos y cadenas colaborativas.</li>
-            <li>Mensajería privada, historial de intercambios y reputación transparente.</li>
-          </ul>
+      button {
+        background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+        color: #04111f;
+        border: none;
+        font-weight: 700;
+        padding: 0.75rem 1.1rem;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 12px 30px rgba(14, 165, 233, 0.25);
+      }
+
+      .link-button {
+        background: none;
+        color: var(--accent);
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        font-size: 0.95rem;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      .info-text {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-top: -0.3rem;
+      }
+
+      .list {
+        display: grid;
+        gap: 0.9rem;
+      }
+
+      .list-item {
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 0.9rem 1rem;
+        background: rgba(30, 41, 59, 0.65);
+        display: grid;
+        gap: 0.35rem;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+        padding: 0.2rem 0.6rem;
+        border-radius: 999px;
+        background: rgba(56, 189, 248, 0.15);
+        color: var(--accent);
+      }
+
+      .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .status[data-status='pendiente'] {
+        color: #fbbf24;
+      }
+
+      .status[data-status='aceptado'] {
+        color: var(--success);
+      }
+
+      .status[data-status='rechazado'] {
+        color: #f87171;
+      }
+
+      .status[data-status='completado'] {
+        color: #38bdf8;
+      }
+
+      .chat {
+        display: grid;
+        gap: 1rem;
+        height: 100%;
+      }
+
+      .chat-history {
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 1rem;
+        background: rgba(30, 41, 59, 0.55);
+        height: 260px;
+        overflow-y: auto;
+        display: grid;
+        gap: 0.8rem;
+      }
+
+      .message {
+        display: grid;
+        gap: 0.3rem;
+      }
+
+      .message-author {
+        font-weight: 600;
+        font-size: 0.9rem;
+      }
+
+      .timestamp {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+      }
+
+      .empty-state {
+        color: var(--text-muted);
+        text-align: center;
+        padding: 2rem 1rem;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      footer {
+        border-top: 1px solid var(--border);
+        padding: 1.5rem;
+        text-align: center;
+        color: var(--text-muted);
+        font-size: 0.85rem;
+      }
+
+      .danger {
+        background: #f87171;
+        color: #0f172a;
+      }
+
+      .actions {
+        display: flex;
+        gap: 0.6rem;
+        flex-wrap: wrap;
+        margin-top: 0.6rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Skill Swaaap · MVP</h1>
+    </header>
+    <main>
+      <section id="auth" class="card">
+        <div class="split split-2">
+          <div>
+            <h2>Inicia sesión</h2>
+            <form id="login-form">
+              <div>
+                <label for="login-email">Correo electrónico</label>
+                <input id="login-email" name="email" type="email" required />
+              </div>
+              <div>
+                <label for="login-password">Contraseña</label>
+                <input id="login-password" name="password" type="password" required />
+              </div>
+              <button type="submit">Entrar</button>
+            </form>
+          </div>
+          <div>
+            <h2>Regístrate</h2>
+            <form id="register-form">
+              <div>
+                <label for="register-name">Nombre completo</label>
+                <input id="register-name" name="name" type="text" required />
+              </div>
+              <div>
+                <label for="register-email">Correo electrónico</label>
+                <input id="register-email" name="email" type="email" required />
+              </div>
+              <div>
+                <label for="register-password">Contraseña</label>
+                <input id="register-password" name="password" type="password" required />
+              </div>
+              <button type="submit">Crear cuenta</button>
+            </form>
+          </div>
         </div>
       </section>
-    </div>
 
-    <section id="perfil">
-      <div class="container">
-        <div class="section-tag">01 · Perfil de usuario</div>
-        <h2 class="section-title">Un perfil diseñado como tarjeta de presentación</h2>
-        <p class="section-lead">
-          Presenta lo que enseñas y lo que te gustaría aprender. Organiza habilidades por categorías, comparte tu historia y
-          respalda tu experiencia con evidencias reales.
-        </p>
-        <div class="grid grid-3">
-          <article class="card">
-            <span class="pill">Habilidades que ofreces</span>
-            <h3 class="card-title">Clasificación detallada</h3>
-            <p>Organiza tus talentos en categorías y subcategorías (p. ej. Tecnología &gt; Desarrollo Frontend) para aparecer en búsquedas precisas.</p>
-          </article>
-          <article class="card">
-            <span class="pill">Habilidades que buscas</span>
-            <h3 class="card-title">Metas claras</h3>
-            <p>Indica las habilidades que quieres aprender o perfeccionar para que el algoritmo encuentre a tu pareja ideal.</p>
-          </article>
-          <article class="card">
-            <span class="pill">Portafolio</span>
-            <h3 class="card-title">Muestra tu experiencia</h3>
-            <p>Sube fotos, videos o enlaces a GitHub, Behance o YouTube y demuestra la calidad de lo que puedes ofrecer.</p>
-          </article>
+      <section id="app" class="hidden">
+        <div class="split split-2">
+          <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center">
+              <h2>Mi perfil</h2>
+              <button class="link-button" id="logout">Cerrar sesión</button>
+            </div>
+            <form id="profile-form">
+              <div>
+                <label for="profile-name">Nombre</label>
+                <input id="profile-name" name="name" type="text" required />
+                <p class="info-text">Comparte cómo te gustaría que te llamen.</p>
+              </div>
+              <div>
+                <label for="profile-bio">Biografía</label>
+                <textarea id="profile-bio" name="bio" placeholder="Cuéntanos sobre ti"></textarea>
+              </div>
+              <div>
+                <label for="profile-skills-offering">Habilidades que ofreces</label>
+                <textarea id="profile-skills-offering" name="skillsOffering" placeholder="Ej. Clases de guitarra, mentoría UX"></textarea>
+              </div>
+              <div>
+                <label for="profile-skills-seeking">Habilidades que buscas</label>
+                <textarea id="profile-skills-seeking" name="skillsSeeking" placeholder="Ej. Inglés conversacional, edición de video"></textarea>
+              </div>
+              <div>
+                <label for="profile-availability">Disponibilidad</label>
+                <input id="profile-availability" name="availability" placeholder="Ej. Martes y jueves por la tarde" />
+              </div>
+              <button type="submit">Guardar perfil</button>
+            </form>
+          </div>
+
+          <div class="split" style="gap: 1.5rem">
+            <div class="card">
+              <h2>Explorar comunidad</h2>
+              <p class="info-text">Encuentra personas para intercambiar habilidades.</p>
+              <div id="users-list" class="list"></div>
+            </div>
+            <div class="card">
+              <h2>Mis solicitudes</h2>
+              <div id="requests-list" class="list"></div>
+            </div>
+          </div>
         </div>
-        <div class="feature-list">
-          <div class="feature">
-            <div class="feature-icon">🧑‍💼</div>
+
+        <div class="card">
+          <h2>Chat de intercambio</h2>
+          <div class="split split-2">
             <div>
-              <h4>Bio con propósito</h4>
-              <p>Comparte tu historia y motivaciones para conectar con personas que valoren tu forma de aprender y enseñar.</p>
+              <label for="chat-request">Selecciona una solicitud</label>
+              <select id="chat-request"></select>
+            </div>
+            <div class="chat">
+              <div id="chat-history" class="chat-history"></div>
+              <form id="chat-form">
+                <div>
+                  <label class="sr-only" for="chat-message">Mensaje</label>
+                  <textarea id="chat-message" placeholder="Escribe un mensaje"></textarea>
+                </div>
+                <button type="submit">Enviar</button>
+              </form>
             </div>
           </div>
-          <div class="feature">
-            <div class="feature-icon">🔐</div>
-            <div>
-              <h4>Verificación sencilla</h4>
-              <p>Valida tu correo o teléfono para fortalecer la confianza en la comunidad.</p>
+        </div>
+      </section>
+    </main>
+    <footer>© <span id="year"></span> Skill Swaaap. Conecta, comparte y aprende en comunidad.</footer>
+
+    <script>
+      const API_BASE = 'http://localhost:4000/api';
+      const authSection = document.getElementById('auth');
+      const appSection = document.getElementById('app');
+      const loginForm = document.getElementById('login-form');
+      const registerForm = document.getElementById('register-form');
+      const profileForm = document.getElementById('profile-form');
+      const usersList = document.getElementById('users-list');
+      const requestsList = document.getElementById('requests-list');
+      const logoutButton = document.getElementById('logout');
+      const chatSelect = document.getElementById('chat-request');
+      const chatHistory = document.getElementById('chat-history');
+      const chatForm = document.getElementById('chat-form');
+      const chatMessage = document.getElementById('chat-message');
+
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      const state = {
+        token: localStorage.getItem('skill-swaaap-token'),
+        user: null,
+        requests: [],
+        selectedRequestId: null
+      };
+
+      function handleError(error) {
+        alert(error.message || 'Ocurrió un error inesperado');
+      }
+
+      async function apiFetch(endpoint, options = {}) {
+        const response = await fetch(`${API_BASE}${endpoint}`, {
+          ...options,
+          headers: {
+            'Content-Type': 'application/json',
+            ...(options.headers || {}),
+            ...(state.token ? { Authorization: `Bearer ${state.token}` } : {})
+          }
+        });
+
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          throw new Error(data.error || 'No se pudo completar la operación');
+        }
+        return data;
+      }
+
+      function toggleApp(loggedIn) {
+        if (loggedIn) {
+          authSection.classList.add('hidden');
+          appSection.classList.remove('hidden');
+        } else {
+          authSection.classList.remove('hidden');
+          appSection.classList.add('hidden');
+        }
+      }
+
+      function populateProfile() {
+        if (!state.user) return;
+        document.getElementById('profile-name').value = state.user.name || '';
+        document.getElementById('profile-bio').value = state.user.profile?.bio || '';
+        document.getElementById('profile-skills-offering').value = state.user.profile?.skillsOffering || '';
+        document.getElementById('profile-skills-seeking').value = state.user.profile?.skillsSeeking || '';
+        document.getElementById('profile-availability').value = state.user.profile?.availability || '';
+      }
+
+      function renderUsers(users) {
+        usersList.innerHTML = '';
+        if (!users.length) {
+          usersList.innerHTML = '<div class="empty-state">Aún no hay otras personas registradas.</div>';
+          return;
+        }
+
+        users.forEach((user) => {
+          const item = document.createElement('div');
+          item.className = 'list-item';
+          item.innerHTML = `
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+              <strong>${user.name}</strong>
+              <span class="badge">${user.profile?.skillsOffering ? 'Ofrece' : 'Nuevo'}</span>
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="algoritmo">
-      <div class="container">
-        <div class="section-tag">02 · Coincidencias</div>
-        <h2 class="section-title">Trueques perfectos y cadenas colaborativas</h2>
-        <p class="section-lead">
-          Un motor de coincidencias inteligente analiza la oferta y demanda de habilidades para crear intercambios equilibrados.
-          Desde trueques uno a uno hasta cadenas que involucran a toda la comunidad.
-        </p>
-        <div class="split">
-          <article class="card">
-            <span class="pill">Trueque perfecto</span>
-            <h3 class="card-title">Coincidencias de doble vía</h3>
-            <p>Encuentra personas que ofrecen lo que buscas y desean exactamente lo que puedes enseñar.</p>
-            <div class="feature-list">
-              <div class="feature">
-                <div class="feature-icon">🔄</div>
-                <div>
-                  <h4>Intercambios equilibrados</h4>
-                  <p>Prioriza matches donde ambos usuarios obtienen valor inmediato.</p>
-                </div>
-              </div>
-              <div class="feature">
-                <div class="feature-icon">🧭</div>
-                <div>
-                  <h4>Filtros inteligentes</h4>
-                  <p>Filtra por ubicación, categoría y nivel de habilidad para afinar resultados.</p>
-                </div>
-              </div>
+            <div class="info-text">${user.profile?.bio || 'Sin biografía aún.'}</div>
+            <div style="display:grid;gap:0.3rem;font-size:0.85rem;">
+              <div><strong>Ofrece:</strong> ${user.profile?.skillsOffering || '—'}</div>
+              <div><strong>Busca:</strong> ${user.profile?.skillsSeeking || '—'}</div>
             </div>
-          </article>
-          <article class="card">
-            <span class="pill">Cadena de favores</span>
-            <h3 class="card-title">Coincidencias de terceros</h3>
-            <p>Cuando no existe un trueque directo, SkillSwap propone cadenas que conectan a más de dos personas.</p>
-            <div class="feature-list">
-              <div class="feature">
-                <div class="feature-icon">🤝</div>
-                <div>
-                  <h4>Red colaborativa</h4>
-                  <p>Invita a un tercer integrante que completa la cadena de intercambio.</p>
-                </div>
-              </div>
-              <div class="feature">
-                <div class="feature-icon">📍</div>
-                <div>
-                  <h4>Proximidad geográfica</h4>
-                  <p>Configura un radio de búsqueda para encontrar oportunidades cercanas.</p>
-                </div>
-              </div>
+            <button data-user="${user.id}">Solicitar intercambio</button>
+          `;
+          const button = item.querySelector('button');
+          button.addEventListener('click', async () => {
+            const message = prompt('¿Qué te gustaría proponer?');
+            if (!message) return;
+            try {
+              await apiFetch('/requests', {
+                method: 'POST',
+                body: JSON.stringify({ toUserId: user.id, message })
+              });
+              await refreshRequests();
+              alert('Solicitud enviada correctamente.');
+            } catch (error) {
+              handleError(error);
+            }
+          });
+          usersList.appendChild(item);
+        });
+      }
+
+      function renderRequests() {
+        requestsList.innerHTML = '';
+        chatSelect.innerHTML = '';
+        chatHistory.innerHTML = '<div class="empty-state">Selecciona una solicitud para ver el chat.</div>';
+        state.selectedRequestId = null;
+
+        if (!state.requests.length) {
+          requestsList.innerHTML = '<div class="empty-state">Aún no hay solicitudes.</div>';
+          chatSelect.innerHTML = '<option value="">Sin solicitudes disponibles</option>';
+          return;
+        }
+
+        chatSelect.innerHTML = '<option value="">Selecciona una solicitud</option>';
+
+        state.requests.forEach((request) => {
+          const item = document.createElement('div');
+          item.className = 'list-item';
+          const otherUser = request.fromUserId === state.user.id ? request.toUser : request.fromUser;
+          item.innerHTML = `
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+              <strong>${otherUser?.name || 'Usuario'}</strong>
+              <span class="status" data-status="${request.status}">${request.status}</span>
             </div>
-          </article>
-        </div>
-      </div>
-    </section>
+            <div class="info-text">${new Date(request.createdAt).toLocaleString()}</div>
+            <div>${request.message || 'Sin mensaje adicional.'}</div>
+          `;
 
-    <section id="mensajeria">
-      <div class="container">
-        <div class="section-tag">03 · Mensajería</div>
-        <h2 class="section-title">Comunicación segura y eficiente</h2>
-        <p class="section-lead">
-          El chat integrado mantiene los datos privados hasta que decidas compartirlos, y te acompaña en cada etapa del trueque.
-        </p>
-        <div class="grid grid-3">
-          <article class="card">
-            <h3 class="card-title">Chat uno a uno</h3>
-            <p>Conversa en tiempo real sin revelar tu correo o número de teléfono.</p>
-          </article>
-          <article class="card">
-            <h3 class="card-title">Plantillas para romper el hielo</h3>
-            <p>Inicia conversaciones con mensajes prediseñados que inspiran intercambios respetuosos.</p>
-          </article>
-          <article class="card">
-            <h3 class="card-title">Historial de intercambios</h3>
-            <p>Consulta el estado de cada trueque: pendiente, en progreso o completado.</p>
-          </article>
-        </div>
-      </div>
-    </section>
+          if (request.toUserId === state.user.id && request.status === 'pendiente') {
+            const actions = document.createElement('div');
+            actions.className = 'actions';
+            ['aceptado', 'rechazado'].forEach((status) => {
+              const btn = document.createElement('button');
+              btn.textContent = status === 'aceptado' ? 'Aceptar' : 'Rechazar';
+              if (status === 'rechazado') {
+                btn.classList.add('danger');
+              }
+              btn.addEventListener('click', async () => {
+                try {
+                  await apiFetch(`/requests/${request.id}/status`, {
+                    method: 'POST',
+                    body: JSON.stringify({ status })
+                  });
+                  await refreshRequests();
+                } catch (error) {
+                  handleError(error);
+                }
+              });
+              actions.appendChild(btn);
+            });
+            item.appendChild(actions);
+          }
 
-    <section id="confianza">
-      <div class="container">
-        <div class="section-tag">04 · Confianza</div>
-        <h2 class="section-title">Valoraciones mutuas para relaciones sólidas</h2>
-        <p class="section-lead">
-          Después de cada intercambio, ambos usuarios evalúan la experiencia en aspectos clave que se traducen en reputación visible.
-        </p>
-        <div class="grid grid-3">
-          <article class="card">
-            <h3 class="card-title">Valoración recíproca</h3>
-            <p>Las opiniones se muestran cuando ambos usuarios califican, fomentando comentarios honestos.</p>
-          </article>
-          <article class="card">
-            <h3 class="card-title">Indicadores detallados</h3>
-            <p>Mide calidad de la habilidad, comunicación y puntualidad para identificar socios ideales.</p>
-          </article>
-          <article class="card">
-            <h3 class="card-title">Reputación visible</h3>
-            <p>Obtén insignias o estrellas según tu desempeño para generar confianza desde el primer contacto.</p>
-          </article>
-        </div>
-      </div>
-    </section>
+          requestsList.appendChild(item);
 
-    <section id="experiencia">
-      <div class="container">
-        <div class="section-tag">05 · Experiencia</div>
-        <h2 class="section-title">UI accesible con enfoque humano</h2>
-        <div class="split">
-          <article class="card">
-            <span class="pill">UI/UX</span>
-            <h3 class="card-title">Navegación intuitiva</h3>
-            <p>Paleta acogedora, micro animaciones celebratorias y secciones claras: Mi Perfil, Explorar Habilidades y Mensajes.</p>
-          </article>
-          <article class="card">
-            <span class="pill">Geolocalización</span>
-            <h3 class="card-title">Mapa interactivo y control de privacidad</h3>
-            <p>Visualiza la comunidad en un mapa y decide si mostrar ciudad, barrio o ubicación precisa.</p>
-          </article>
-        </div>
-      </div>
-    </section>
+          const option = document.createElement('option');
+          option.value = request.id;
+          option.textContent = `${otherUser?.name || 'Usuario'} · ${request.status}`;
+          chatSelect.appendChild(option);
+        });
+      }
 
-    <section id="tecnica">
-      <div class="container">
-        <div class="section-tag">06 · Arquitectura técnica</div>
-        <h2 class="section-title">Lista para escalar con seguridad</h2>
-        <div class="split">
-          <div>
-            <p class="section-lead">
-              Una base robusta garantiza rendimiento y protección de datos desde el primer día.
-            </p>
-            <ul class="list">
-              <li><strong>Backend escalable:</strong> Node.js, Django o Rails con PostgreSQL o MongoDB.</li>
-              <li><strong>Autenticación segura:</strong> Inicio de sesión con correo, Google o Facebook mediante OAuth/Firebase.</li>
-              <li><strong>Protección de datos:</strong> Chats cifrados y herramientas para reportar comportamientos inapropiados.</li>
-              <li><strong>Monetización futura:</strong> Suscripción premium con filtros avanzados y más sugerencias.</li>
-            </ul>
-          </div>
-          <article class="card">
-            <span class="pill">Roadmap</span>
-            <h3 class="card-title">Próximos hitos</h3>
-            <div class="feature-list">
-              <div class="feature">
-                <div class="feature-icon">🚀</div>
-                <div>
-                  <h4>Lanzamiento beta</h4>
-                  <p>Probar funcionalidades clave con un grupo reducido de usuarios.</p>
-                </div>
-              </div>
-              <div class="feature">
-                <div class="feature-icon">📊</div>
-                <div>
-                  <h4>Métricas de aprendizaje</h4>
-                  <p>Medir satisfacción, retención y calidad de los intercambios.</p>
-                </div>
-              </div>
-              <div class="feature">
-                <div class="feature-icon">💡</div>
-                <div>
-                  <h4>Modelo sostenible</h4>
-                  <p>Agregar beneficios premium sin perder la esencia colaborativa.</p>
-                </div>
-              </div>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
+      async function refreshUsers() {
+        try {
+          const { users } = await apiFetch('/users');
+          renderUsers(users);
+        } catch (error) {
+          handleError(error);
+        }
+      }
 
-    <section class="cta" id="cta">
-      <div class="container">
-        <h2>Forma parte de la beta privada</h2>
-        <p>
-          Conecta con personas apasionadas, comparte tus talentos y aprende algo nuevo cada semana.
-        </p>
-        <a class="btn-primary" href="mailto:hola@skillswap.app?subject=Quiero%20unirme%20a%20la%20beta">Reservar mi invitación</a>
-      </div>
-    </section>
-  </main>
+      async function refreshRequests() {
+        try {
+          const { requests } = await apiFetch('/requests');
+          state.requests = requests;
+          renderRequests();
+        } catch (error) {
+          handleError(error);
+        }
+      }
 
-  <footer>
-    <div class="container">
-      © <span id="year"></span> SkillSwap · Construyendo una comunidad de intercambio de habilidades.
-    </div>
-  </footer>
+      async function refreshChat(requestId) {
+        if (!requestId) {
+          chatHistory.innerHTML = '<div class="empty-state">Selecciona una solicitud para ver el chat.</div>';
+          return;
+        }
+        try {
+          const { messages } = await apiFetch(`/requests/${requestId}/messages`);
+          if (!messages.length) {
+            chatHistory.innerHTML = '<div class="empty-state">Todavía no hay mensajes en este intercambio.</div>';
+            return;
+          }
+          chatHistory.innerHTML = '';
+          messages.forEach((message) => {
+            const item = document.createElement('div');
+            item.className = 'message';
+            item.innerHTML = `
+              <div class="message-author">${message.sender?.name || 'Usuario'}</div>
+              <div>${message.text}</div>
+              <div class="timestamp">${new Date(message.createdAt).toLocaleString()}</div>
+            `;
+            chatHistory.appendChild(item);
+          });
+        } catch (error) {
+          handleError(error);
+        }
+      }
 
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
-</body>
+      async function bootstrap() {
+        if (!state.token) {
+          toggleApp(false);
+          return;
+        }
+
+        try {
+          const { user } = await apiFetch('/me');
+          state.user = user;
+          populateProfile();
+          toggleApp(true);
+          await refreshUsers();
+          await refreshRequests();
+        } catch (error) {
+          localStorage.removeItem('skill-swaaap-token');
+          state.token = null;
+          toggleApp(false);
+        }
+      }
+
+      loginForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const formData = new FormData(loginForm);
+        try {
+          const { token, user } = await apiFetch('/login', {
+            method: 'POST',
+            body: JSON.stringify(Object.fromEntries(formData))
+          });
+          state.token = token;
+          state.user = user;
+          localStorage.setItem('skill-swaaap-token', token);
+          populateProfile();
+          toggleApp(true);
+          await refreshUsers();
+          await refreshRequests();
+          loginForm.reset();
+        } catch (error) {
+          handleError(error);
+        }
+      });
+
+      registerForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const formData = new FormData(registerForm);
+        try {
+          const { token, user } = await apiFetch('/register', {
+            method: 'POST',
+            body: JSON.stringify(Object.fromEntries(formData))
+          });
+          state.token = token;
+          state.user = user;
+          localStorage.setItem('skill-swaaap-token', token);
+          populateProfile();
+          toggleApp(true);
+          await refreshUsers();
+          await refreshRequests();
+          registerForm.reset();
+        } catch (error) {
+          handleError(error);
+        }
+      });
+
+      profileForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const formData = new FormData(profileForm);
+        const payload = Object.fromEntries(formData);
+        try {
+          const { user } = await apiFetch('/profile', {
+            method: 'POST',
+            body: JSON.stringify(payload)
+          });
+          state.user = user;
+          alert('Perfil actualizado correctamente.');
+        } catch (error) {
+          handleError(error);
+        }
+      });
+
+      chatSelect.addEventListener('change', async (event) => {
+        state.selectedRequestId = event.target.value;
+        await refreshChat(state.selectedRequestId);
+      });
+
+      chatForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        if (!state.selectedRequestId) {
+          alert('Selecciona una solicitud primero.');
+          return;
+        }
+        const text = chatMessage.value.trim();
+        if (!text) return;
+        try {
+          await apiFetch(`/requests/${state.selectedRequestId}/messages`, {
+            method: 'POST',
+            body: JSON.stringify({ text })
+          });
+          chatMessage.value = '';
+          await refreshChat(state.selectedRequestId);
+        } catch (error) {
+          handleError(error);
+        }
+      });
+
+      logoutButton.addEventListener('click', () => {
+        state.token = null;
+        state.user = null;
+        localStorage.removeItem('skill-swaaap-token');
+        toggleApp(false);
+      });
+
+      bootstrap();
+    </script>
+  </body>
 </html>
